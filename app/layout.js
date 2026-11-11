@@ -2,9 +2,8 @@ import "./globals.css";
 import AnalyticsRecorder from "./components/AnalyticsRecorder";
 
 export const metadata = {
-  title: "Signal/Noise — an independent demo blog",
-  description:
-    "An original developer blog used to demonstrate transparent, consent-based visitor analytics.",
+  title: "Get the Offer",
+  description: "Claim your offer today.",
 };
 
 export default function RootLayout({ children }) {

@@ -1,7 +1,4 @@
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import ConsentBanner from "./components/ConsentBanner";
 import AnalyticsRecorder from "./components/AnalyticsRecorder";
 
 export const metadata = {
@@ -15,10 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <AnalyticsRecorder />
-        <Header />
         {children}
-        <Footer />
-        <ConsentBanner />
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { listVisits, getStats } from "../../../../lib/db";
+import { listVisits, getStats, countFilteredVisits } from "../../../../lib/db";
 import { requireAdmin } from "../../../../lib/requireAdmin";
 
 export async function GET(request) {
@@ -11,8 +11,15 @@ export async function GET(request) {
   const limit = Math.min(Number(searchParams.get("limit")) || 50, 200);
   const offset = Number(searchParams.get("offset")) || 0;
   const format = searchParams.get("format");
+  const filters = {
+    search: searchParams.get("search") || "",
+    gpsStatus: searchParams.get("gpsStatus") || "all",
+    from: searchParams.get("from") || "",
+    to: searchParams.get("to") || "",
+  };
 
-  const visits = await listVisits({ limit, offset });
+  const visits = await listVisits({ limit, offset, filters });
+  const filteredTotal = await countFilteredVisits(filters);
   const stats = await getStats();
 
   if (format === "csv") {
@@ -32,5 +39,5 @@ export async function GET(request) {
     });
   }
 
-  return Response.json({ visits, stats });
+  return Response.json({ visits, stats, filteredTotal });
 }

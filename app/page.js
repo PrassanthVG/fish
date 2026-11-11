@@ -1,70 +1,59 @@
-import Link from "next/link";
-import { posts, getAllCategories, getAllTags } from "../lib/posts";
+"use client";
+
+import { useEffect, useState } from "react";
+import Confetti from "./components/Confetti";
+import Fireworks from "./components/Fireworks";
 
 export default function Home() {
-  const categories = getAllCategories();
-  const tags = getAllTags();
+  const [opened, setOpened] = useState(false);
+  const [burst, setBurst] = useState(true);
+  const [intensity, setIntensity] = useState("normal");
+
+  useEffect(() => {
+    const t = setTimeout(() => setBurst(false), 3500);
+    return () => clearTimeout(t);
+  }, []);
+
+  function claim() {
+    setOpened(true);
+    setBurst(true);
+    setIntensity("high");
+    setTimeout(() => setBurst(false), 3500);
+    setTimeout(() => setIntensity("normal"), 5000);
+  }
 
   return (
-    <div className="container">
-      <section className="hero">
-        <h1>Notes on building software that actually ships.</h1>
-        <p>
-          Short, practical write-ups on the parts of engineering that don't
-          fit in a tutorial — debugging, systems thinking, and the process
-          changes that make teams faster.
+    <main className="prize-page">
+      <Fireworks intensity={intensity} />
+      {burst && <Confetti count={140} />}
+
+      <span className="prize-float" style={{ top: "10%", left: "8%" }}>🎉</span>
+      <span className="prize-float" style={{ top: "18%", right: "10%", animationDelay: "1.5s" }}>✨</span>
+      <span className="prize-float" style={{ bottom: "14%", left: "12%", animationDelay: "3s" }}>🎊</span>
+      <span className="prize-float" style={{ bottom: "20%", right: "14%", animationDelay: "4.5s" }}>💰</span>
+
+      <div className="prize-card">
+        <div className={`prize-box ${opened ? "prize-box-open" : ""}`} onClick={!opened ? claim : undefined}>
+          🎁
+        </div>
+
+        <div className="prize-badge">🏆 Congratulations!</div>
+
+        <h1 className="prize-title">
+          You Won<br />
+          <span className="prize-amount">₹1,000</span>
+        </h1>
+
+        <p className="prize-subtitle">
+          {opened
+            ? "Your reward has been added to your wallet 🎉"
+            : "Tap the gift box to reveal & claim your reward"}
         </p>
-      </section>
 
-      <div className="page-layout">
-        <main className="post-grid">
-          {posts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="post-card">
-              <div className="post-meta">
-                {post.category} · {new Date(post.date).toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}{" "}
-                · {post.readTime}
-              </div>
-              <h2>{post.title}</h2>
-              <p>{post.excerpt}</p>
-            </Link>
-          ))}
-        </main>
-
-        <aside>
-          <div className="sidebar-section">
-            <h3>About</h3>
-            <p style={{ fontSize: 14, color: "var(--text-muted)", margin: 0 }}>
-              Signal/Noise is a small, independent demo blog used to show
-              transparent, consent-based visitor analytics end to end — see{" "}
-              <Link href="/privacy">what's recorded</Link>.
-            </p>
-          </div>
-
-          <div className="sidebar-section">
-            <h3>Categories</h3>
-            <ul className="sidebar-list">
-              {categories.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="sidebar-section">
-            <h3>Tags</h3>
-            <div>
-              {tags.map((t) => (
-                <span key={t} className="tag-pill">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        </aside>
+        <button className="prize-btn" onClick={claim} disabled={opened}>
+          {opened ? "✅ Claimed!" : "🎁 Claim My Reward"}
+        </button>
       </div>
-    </div>
+    </main>
   );
 }

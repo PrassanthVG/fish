@@ -8,7 +8,8 @@ export default function Header() {
           <span>📡</span> Signal/Noise
         </Link>
         <nav className="main-nav">
-          <Link href="/">Articles</Link>
+          <Link href="/">Home</Link>
+          <Link href="/blog">Articles</Link>
           <Link href="/privacy">Privacy &amp; analytics</Link>
           <Link href="/admin/login">Admin</Link>
         </nav>

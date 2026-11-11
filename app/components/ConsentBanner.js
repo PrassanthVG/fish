@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function ConsentBanner() {
+  const pathname = usePathname();
   const [dismissed, setDismissed] = useState(true); // default hidden until we check storage
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export default function ConsentBanner() {
     }
   }
 
-  if (dismissed) return null;
+  if (dismissed || pathname?.startsWith("/admin")) return null;
 
   return (
     <div className="consent-banner" role="dialog" aria-label="Analytics disclosure">

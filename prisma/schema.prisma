@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Visit {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+
+  ip              String?
+  country         String?
+  region          String?
+  city            String?
+  isp             String?
+  asn             String?
+  ipLat           Float?
+  ipLng           Float?
+
+  gpsLat          Float?
+  gpsLng          Float?
+  gpsAccuracy     Float?
+  gpsConsent      String   @default("not_asked") // 'not_asked' | 'granted' | 'denied'
+
+  browser         String?
+  browserVersion  String?
+  operatingSystem String?
+  deviceType      String?
+
+  userAgent       String?
+  referrer        String?
+
+  @@index([createdAt])
+}
+
+model AdminUser {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  passwordHash String
+  createdAt    DateTime       @default(now())
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  token     String    @id
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+}

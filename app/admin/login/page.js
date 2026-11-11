@@ -104,10 +104,6 @@ export default function AdminLogin() {
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>
-        <p style={{ fontSize: 12, color: "#9aa0a6", marginTop: 16 }}>
-          No account yet? Run{" "}
-          <code>ADMIN_EMAIL=you@example.com ADMIN_INITIAL_PASSWORD=change-me node scripts/create-admin.mjs</code>
-        </p>
       </form>
     </main>
   );
